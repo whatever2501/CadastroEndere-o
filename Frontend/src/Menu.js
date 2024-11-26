@@ -20,10 +20,7 @@ const Menu = () => {
             <Nav className="mr-auto" navbar style={{margin: '0 auto'}}>
                 
                 <NavItem>
-                    <NavLink href="/">Home</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink href="/About">About</NavLink>
+                    <NavLink href="/">Lista</NavLink>
                 </NavItem>
                 <NavItem>
                     <NavLink href="/Cadastro">Cadastro</NavLink>
