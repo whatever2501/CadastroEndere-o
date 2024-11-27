@@ -26,10 +26,46 @@ const ListarUsuarios = () => {
     setUsuarioEditando({ ...usuario}); 
 
   };
-  useEffect(() => {
-    console.log('usuarioEditando atualizado:', usuarioEditando);
-  }, [usuarioEditando]);
- 
+
+
+  const clearEndereco = () => {
+    setUsuarioEditando({
+      logradouro: '',
+      bairro: '',
+      cidade: '',
+      estado: '',
+    });
+  };
+
+  const handleCepBlur = async () => {
+    const { cep } = usuarioEditando;
+
+    if (cep.length === 8) {
+      try {
+        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await response.json();
+
+        if (data.erro) {
+          alert('CEP não encontrado.');
+          clearEndereco();
+        } else {
+          setUsuarioEditando({
+            ...usuarioEditando,
+            logradouro: data.logradouro || '',
+            bairro: data.bairro || '',
+            cidade: data.localidade || '',
+            estado: data.uf || '',
+          });
+        }
+      } catch (error) {
+        alert('Erro ao buscar o CEP.');
+        clearEndereco();
+      }
+    } else {
+      alert('Digite um CEP válido com 8 dígitos.');
+      clearEndereco();
+    }
+  };
   const salvarEdicao = async () => {
     try {
       const response = await fetch(`./usuarios/${usuarioEditando.id}`, {
@@ -137,6 +173,7 @@ const ListarUsuarios = () => {
               <input
                 type="text"
                 name="cep"
+                onBlur={handleCepBlur} 
                 value={usuarioEditando.cep}
                 onChange={handleInputChange}
                 className="form-control"
