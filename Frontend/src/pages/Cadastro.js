@@ -57,7 +57,29 @@ const Cadastro = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Envia os dados para o backend
+    try {
+      const response = await fetch('./usuarios', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
 
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Usuário cadastrado com sucesso:', data);
+      } else {
+        console.error('Erro ao cadastrar usuário');
+      }
+    } catch (error) {
+      console.error('Erro de comunicação com o backend:', error);
+    }
+  };
 
   return (
   
@@ -65,7 +87,7 @@ const Cadastro = () => {
       <h1 style={{  textAlign: 'center'}}
           className="text-center">Cadastro Endereço</h1>
    <br></br>
-   <Form>
+   <Form  onSubmit={handleSubmit}>
   <Row>
     <Col md={6}>
       <FormGroup>
@@ -76,7 +98,7 @@ const Cadastro = () => {
     <Col md={6}>
       <FormGroup>
         <Label for="cpf">CPF</Label>
-        <Input type="text" name="cpf" id="cpf" autoComplete="cpf" />
+        <Input value={formData.cpf} onChange={handleInputChange} type="text" name="cpf" id="cpf" autoComplete="cpf" />
       </FormGroup>
     </Col>
   </Row>
@@ -116,7 +138,7 @@ const Cadastro = () => {
       </FormGroup>
     </Col>
   </Row>
-  <Button color="success">Salvar</Button>
+  <Button color="success" type="submit" className="btn btn-primary">Salvar</Button>
 </Form>
     
     
