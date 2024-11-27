@@ -18,6 +18,10 @@ public class Usuario {
     private String cidade;
     private String estado;
 
+    public Long getId() {
+        return id;
+    }
+
     public String getNome() {
         return nome;
     }
