@@ -1,3 +1,5 @@
+package com.CadastroEndereco.Validador;
+
 import com.CadastroEndereco.Validador.CPFValidador;
 
 import javax.validation.Constraint;

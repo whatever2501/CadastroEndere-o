@@ -2,6 +2,7 @@ package com.CadastroEndereco.Controller;
 import com.CadastroEndereco.Model.Usuario;
 import com.CadastroEndereco.Service.UsuarioService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class UsuarioController {
 
 
     @PostMapping
-    public ResponseEntity<Usuario> salvar(@RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> salvar(@Validated @RequestBody Usuario usuario) {
         Usuario usuarioSalvo = usuarioService.salvar(usuario);
         return ResponseEntity.ok(usuarioSalvo);
     }

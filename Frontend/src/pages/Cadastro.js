@@ -13,11 +13,57 @@ const Cadastro = () => {
     cidade: '',
     estado: '',
   }); 
+  const [erroCPF, setErroCPF] = useState(false);
+  const validarCPF = (cpf) => {
+    cpf = cpf.replace(/[^\d]/g, ''); // Remove caracteres não numéricos
+  
+    if (cpf.length !== 11) return false; // CPF deve ter 11 dígitos
+  
+    // Verifica se o CPF é uma sequência de números iguais
+    if (/^(\d)\1{10}$/.test(cpf)) return false;
+  
+    // Valida o primeiro dígito verificador
+    let soma = 0;
+    for (let i = 0; i < 9; i++) {
+      soma += parseInt(cpf.charAt(i)) * (10 - i);
+    }
+    let resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) resto = 0;
+    if (resto !== parseInt(cpf.charAt(9))) return false;
+  
+    // Valida o segundo dígito verificador
+    soma = 0;
+    for (let i = 0; i < 10; i++) {
+      soma += parseInt(cpf.charAt(i)) * (11 - i);
+    }
+    resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) resto = 0;
+    return resto === parseInt(cpf.charAt(10));
+  };
+  const formatarCPF = (cpf) => {
+    cpf = cpf.replace(/[^\d]/g, ''); // Remove caracteres não numéricos
+  
+    if (cpf.length > 11) {
+      cpf = cpf.slice(0, 11); // Limita a 11 dígitos
+    }
+  
+    // Adiciona os pontos e traço conforme o padrão
+    return cpf
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    if (name === 'cpf') {
+      // Formatar o CPF e validar
+      const cpfFormatado = formatarCPF(value);
+      setFormData({ ...formData, cpf: cpfFormatado });
+      setErroCPF(!validarCPF(cpfFormatado));
+    } else {
+      setFormData({ ...formData, [name]: value });
+  }};
   const clearEndereco = () => {
     setFormData({
       logradouro: '',
@@ -60,6 +106,10 @@ const Cadastro = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    if (erroCPF) {
+      alert('CPF inválido!');
+      return;
+    }
     // Envia os dados para o backend
     try {
       const response = await fetch('./usuarios', {

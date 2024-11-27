@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class CPFValidador implements ConstraintValidator<CPF, String> {
 
-    private static final String CPF_REGEX = "^(\\d{3}\\.){2}\\d{3}-\\d{2}$";  // Exemplo de formato XXX.XXX.XXX-XX
+    private static final String CPF_REGEX = "^(\\d{3}\\.){2}\\d{3}-\\d{2}$";
 
     @Override
     public void initialize(CPF cpf) {}
