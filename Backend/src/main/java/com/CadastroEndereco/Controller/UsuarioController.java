@@ -35,4 +35,8 @@ public class UsuarioController {
         }
         return ResponseEntity.ok(usuario);
     }
+    @PutMapping("/{id}")
+    public Usuario atualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuarioAtualizado) {
+        return usuarioService.atualizarUsuario(id, usuarioAtualizado);
+    }
 }

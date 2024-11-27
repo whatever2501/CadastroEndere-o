@@ -27,6 +27,23 @@ public class UsuarioService {
     public Usuario buscarPorId(Long id) {
         return usuarioRepository.findById(id).orElse(null);
     }
+    
+    public Usuario atualizarUsuario(Long id, Usuario usuarioAtualizado) {
+        // Verifique se o usuário existe
+        Usuario usuarioExistente = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        // Atualize os dados do usuário
+        usuarioExistente.setNome(usuarioAtualizado.getNome());
+        usuarioExistente.setCpf(usuarioAtualizado.getCpf());
+        usuarioExistente.setCep(usuarioAtualizado.getCep());
+        usuarioExistente.setLogradouro(usuarioAtualizado.getLogradouro());
+        usuarioExistente.setBairro(usuarioAtualizado.getBairro());
+        usuarioExistente.setCidade(usuarioAtualizado.getCidade());
+        usuarioExistente.setEstado(usuarioAtualizado.getEstado());
+
+        // Salve o usuário atualizado no banco de dados
+        return usuarioRepository.save(usuarioExistente);
+    }
 
 
 }
