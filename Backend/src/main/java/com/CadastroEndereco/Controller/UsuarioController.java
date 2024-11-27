@@ -39,4 +39,13 @@ public class UsuarioController {
     public Usuario atualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuarioAtualizado) {
         return usuarioService.atualizarUsuario(id, usuarioAtualizado);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluirUsuario(@PathVariable Long id) {
+        boolean deleted = usuarioService.excluirUsuario(id); // Chama o serviço para excluir o usuário
+        if (deleted) {
+            return ResponseEntity.noContent().build(); // Retorna sucesso (status 204)
+        } else {
+            return ResponseEntity.notFound().build(); // Retorna erro (status 404) se o usuário não for encontrado
+        }
+    }
 }

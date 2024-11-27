@@ -26,7 +26,23 @@ const ListarUsuarios = () => {
     setUsuarioEditando({ ...usuario}); 
 
   };
+  const deletarUsuario = async (id) => {
+    try {
+      const response = await fetch(`./usuarios/${id}`, {
+        method: 'DELETE',
+      });
 
+      if (response.ok) {
+        // Atualiza a lista de usuários após a exclusão
+        const updatedUsuarios = usuarios.filter((usuario) => usuario.id !== id);
+        setUsuarios(updatedUsuarios);
+      } else {
+        console.error('Erro ao excluir o usuário');
+      }
+    } catch (error) {
+      console.error('Erro ao excluir o usuário:', error);
+    }
+  };
 
   const clearEndereco = () => {
     setUsuarioEditando({
@@ -130,6 +146,12 @@ const ListarUsuarios = () => {
                     onClick={() => editarUsuario(usuario)}
                   >
                     Editar
+                  </button>
+                  <button style={{marginLeft:"0.5em"}}
+                    className="btn btn-danger"
+                    onClick={() => deletarUsuario(usuario.id)}
+                  >
+                   Excluir
                   </button>
                 </td>
               </tr>

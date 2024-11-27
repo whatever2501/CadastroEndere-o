@@ -2,6 +2,8 @@ package com.CadastroEndereco.Model;
 
 
 import jakarta.persistence.*;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 public class Usuario {
@@ -9,8 +11,9 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotNull
     private String nome;
+    @CPF
     private String cpf;
     private String cep;
     private String logradouro;

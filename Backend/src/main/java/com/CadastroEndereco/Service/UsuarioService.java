@@ -3,6 +3,7 @@ import com.CadastroEndereco.Model.Usuario;
 import com.CadastroEndereco.Repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -27,7 +28,7 @@ public class UsuarioService {
     public Usuario buscarPorId(Long id) {
         return usuarioRepository.findById(id).orElse(null);
     }
-    
+
     public Usuario atualizarUsuario(Long id, Usuario usuarioAtualizado) {
         // Verifique se o usuário existe
         Usuario usuarioExistente = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
@@ -43,6 +44,15 @@ public class UsuarioService {
 
         // Salve o usuário atualizado no banco de dados
         return usuarioRepository.save(usuarioExistente);
+    }
+    public boolean excluirUsuario(Long id) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id); // Busca o usuário pelo ID
+        if (usuarioOptional.isPresent()) {
+            usuarioRepository.deleteById(id); // Deleta o usuário
+            return true; // Retorna verdadeiro se a exclusão for bem-sucedida
+        } else {
+            return false; // Retorna falso se o usuário não for encontrado
+        }
     }
 
 
