@@ -1,5 +1,5 @@
 # Ignorar o application.properties no diretório específico
-/src/main/resources/application.properties
+/src/main/**/application.properties
 git 
 HELP.md
 target/
