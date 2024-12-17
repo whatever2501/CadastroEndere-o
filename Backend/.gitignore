@@ -1,6 +1,6 @@
 # Ignorar o application.properties no diretório específico
 /src/main/resources/application.properties
-
+git 
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
