@@ -55,10 +55,11 @@ const ListarUsuarios = () => {
 
   const handleCepBlur = async () => {
     const { cep } = usuarioEditando;
-
-    if (cep.length === 8) {
+    const cepForm =  cep.replace(/[^\d]/g, '')
+    
+    if (cepForm.length === 8) {
       try {
-        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const response = await fetch(`https://viacep.com.br/ws/${cepForm}/json/`);
         const data = await response.json();
 
         if (data.erro) {
@@ -106,12 +107,43 @@ const ListarUsuarios = () => {
       console.error('Erro ao atualizar o usuário:', error);
     }
   };
-
+  const formatarCEP = (cep) =>{
+    cep =  cep.replace(/[^\d]/g, '')
+    if (cep.length > 8) {
+      cep = cep.slice(0, 8); // Limita a 8 dígitos
+    }
+    return cep
+      .replace(/(\d{5})(\d{3})$/, '$1-$2')
+   
+  };
+  const formatarCPF = (cpf) => {
+    cpf = cpf.replace(/[^\d]/g, ''); // Remove caracteres não numéricos
+  
+    if (cpf.length > 11) {
+      cpf = cpf.slice(0, 11); // Limita a 11 dígitos
+    }
+  
+    // Adiciona os pontos e traço conforme o padrão
+    return cpf
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+  };
   // Função para atualizar o campo do usuário sendo editado
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if(name === 'cpf'){
+      const cpfFormatado = formatarCPF(value)
+      setUsuarioEditando((prev) => ({ ...prev, [name]: cpfFormatado }));
+    }
+    else if(name === 'cep'){
+      const cepFormatado = formatarCEP(value)
+      setUsuarioEditando((prev) => ({ ...prev, [name]: cepFormatado }));
+    }
+    else{
     setUsuarioEditando((prev) => ({ ...prev, [name]: value }));
-  };
+    
+  }};
 
   return (
     <div className="container" style={{ marginTop: '3em' }}>
