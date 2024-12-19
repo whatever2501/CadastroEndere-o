@@ -40,6 +40,15 @@ const Cadastro = () => {
     if (resto === 10 || resto === 11) resto = 0;
     return resto === parseInt(cpf.charAt(10));
   };
+  const formatarCEP = (cep) =>{
+    cep =  cep.replace(/[^\d]/g, '')
+    if (cep.length > 8) {
+      cep = cep.slice(0, 8); // Limita a 8 dígitos
+    }
+    return cep
+      .replace(/(\d{5})(\d{3})$/, '$1-$2')
+   
+  };
   const formatarCPF = (cpf) => {
     cpf = cpf.replace(/[^\d]/g, ''); // Remove caracteres não numéricos
   
@@ -61,7 +70,12 @@ const Cadastro = () => {
       const cpfFormatado = formatarCPF(value);
       setFormData({ ...formData, cpf: cpfFormatado });
       setErroCPF(!validarCPF(cpfFormatado));
-    } else {
+    } 
+    if(name === 'cep'){
+      const cepFormatado = formatarCEP(value)
+      setFormData({ ...formData, cep: cepFormatado });
+    }
+      else {
       setFormData({ ...formData, [name]: value });
   }};
   const clearEndereco = () => {
@@ -75,10 +89,11 @@ const Cadastro = () => {
 
   const handleCepBlur = async () => {
     const { cep } = formData;
+    const cepForm =  cep.replace(/[^\d]/g, '')
 
-    if (cep.length === 8) {
+    if (cepForm.length === 8) {
       try {
-        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const response = await fetch(`https://viacep.com.br/ws/${cepForm}/json/`);
         const data = await response.json();
 
         if (data.erro) {

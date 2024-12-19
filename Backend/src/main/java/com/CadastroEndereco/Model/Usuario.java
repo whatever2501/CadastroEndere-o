@@ -2,6 +2,7 @@ package com.CadastroEndereco.Model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -15,6 +16,7 @@ public class Usuario {
     private String nome;
     @CPF
     private String cpf;
+    @Pattern(message = "erro cep", regexp = "\\d{5}-\\d{3}")
     private String cep;
     private String logradouro;
     private String bairro;
