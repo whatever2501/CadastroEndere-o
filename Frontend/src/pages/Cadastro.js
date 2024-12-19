@@ -113,7 +113,7 @@ const Cadastro = () => {
         clearEndereco();
       }
     } else {
-      alert('Digite um CEP válido com 8 dígitos.');
+      alert('Digite um CEP válido com 8 sdígitos.');
       clearEndereco();
     }
   };
